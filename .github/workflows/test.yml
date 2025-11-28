@@ -1,7 +1,12 @@
 name: strix-penetration-test
 
 on:
-  pull_request:
+  workflow_dispatch:
+    inputs:
+      target:
+        required: true
+        description: # Scan a local codebase  strix --target ./app-directory  # Security review of a GitHub repository strix --target https://github.com/org/repo   # Black-box web application assessment strix --target https://your-app.com
+        default: './'
 
 jobs:
   security-scan:
@@ -17,4 +22,4 @@ jobs:
           STRIX_LLM: ${{ secrets.STRIX_LLM }}
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
 
-        run: strix -n -t ./
+        run: strix -n -t ${{ github.event.inputs.target }}
